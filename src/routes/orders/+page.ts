@@ -10,7 +10,7 @@ export const load: PageLoad = async ({ fetch, params }) => {
     }
   };
   
- let pageNumber = 1;
+ 
 
   const fetchData = () => {
     return fetch('https://api.themoviedb.org/3/trending/movie/day?language=en-US&page='+pageNumber, options)
@@ -24,3 +24,9 @@ export const load: PageLoad = async ({ fetch, params }) => {
   return fetchData();
   
 };
+
+// export let pageNumber = 1;
+
+// export function setPageNumber(newPageNumber: number) {
+//   pageNumber = newPageNumber;
+// }

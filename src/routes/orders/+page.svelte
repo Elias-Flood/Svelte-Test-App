@@ -20,6 +20,10 @@
 	
 	export let data: PageData;
 
+	export let pageNumber = 1;
+	import { setPageNumber } from './$types';
+
+
 // 	//import { setPageNumber } from '$routes/orders/page.ts';
 // 	let allContent = ["hi", "bye", "lie", "tie", "fry", "cry", "pie", "my", "guy"];
 //   let currentPage = 3; // Update this to simulate page change.
