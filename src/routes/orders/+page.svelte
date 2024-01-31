@@ -69,7 +69,6 @@
 			  </div>
 			  <Dialog.Footer>
 				{data.results[i].id}
-
 			  </Dialog.Footer>
 			</Dialog.Content>
 		  </Dialog.Root>
