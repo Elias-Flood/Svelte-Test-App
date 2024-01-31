@@ -11,6 +11,8 @@
 	import * as Table from '$lib/components/ui/table';
 	import LogoText from '$lib/elements/logoText.svelte';
 
+	import * as Pagination from "$lib/components/ui/pagination";
+
 	import { buttonVariants } from "$lib/components/ui/button";
 	import * as Dialog from "$lib/components/ui/dialog";
 
@@ -18,8 +20,47 @@
 	
 	export let data: PageData;
 
-	
+// 	//import { setPageNumber } from '$routes/orders/page.ts';
+// 	let allContent = ["hi", "bye", "lie", "tie", "fry", "cry", "pie", "my", "guy"];
+//   let currentPage = 3; // Update this to simulate page change.
+//   let postsPerPage = 2;
+//   let allPosts = allContent;
+//   let totalPosts = allPosts.length;
+//   let totalPages = Math.ceil(totalPosts / postsPerPage);
+//   $: postRangeHigh = currentPage * postsPerPage;
+//   $: postRangeLow = postRangeHigh - postsPerPage;
+// 	const setCurrentPage = (newPage: number) => {
+// 		currentPage = newPage;
+// 	}
 </script>
+
+<!-- {#each allPosts as post, i}
+  {#if i >= postRangeLow && i < postRangeHigh}
+    <h3>{post}</h3>
+  {/if}
+{/each}
+
+<ul>
+	{#if currentPage > 1}
+	  <li><a href="/blog" on:click|preventDefault={() => setCurrentPage(1)}>first</a></li>
+	  <li><a href="/blog/{currentPage - 1}" on:click|preventDefault={() => setCurrentPage(currentPage - 1)}>previous</a></li>
+	{/if}
+  {#each [3,2,1] as i}
+    {#if currentPage - i > 0}
+      <li><a href="/blog/{currentPage - i}" on:click|preventDefault={() => setCurrentPage(currentPage - i)}>{currentPage - i}</a></li>
+    {/if}
+  {/each}
+  <li><span>{currentPage}</span></li>
+  {#each Array(3) as _, i}
+    {#if currentPage + (i+1) <= totalPages}
+      <li><a href="/blog/{currentPage + (i+1)}" on:click|preventDefault={() => setCurrentPage(currentPage + (i+1))}>{currentPage + (i+1)}</a></li>
+    {/if}
+  {/each}
+  {#if currentPage < totalPages}
+	  <li><a href="/blog/{currentPage + 1}" on:click|preventDefault={() => setCurrentPage(currentPage + 1)}>next</a></li>
+    <li><a href="/blog/{totalPages}" on:click|preventDefault={() => setCurrentPage(totalPages)}>last</li>
+  {/if}
+</ul> -->
 
 
 <div class="bg-cover bg-center bg-scroll" style="background-image: url('https://image.tmdb.org/t/p/original/{data.results[0].backdrop_path}');">
@@ -79,42 +120,33 @@
 			
 			
 			{/each}
+			
 		</div>
-		
+		<hr class="my-6 h-px border-t-0 bg-transparent bg-gradient-to-r from-transparent via-neutral-500 to-transparent opacity-25 dark:opacity-100"/>
+
+	  <Pagination.Root count={100} perPage={10} let:pages let:currentPage>
+		<Pagination.Content>
+		  <Pagination.Item>
+			<Pagination.PrevButton />
+		  </Pagination.Item>
+		  {#each pages as page (page.key)}
+			{#if page.type === "ellipsis"}
+			  <Pagination.Item>
+				<Pagination.Ellipsis />
+			  </Pagination.Item>
+			{:else}
+			  <Pagination.Item>
+				<Pagination.Link {page} isActive={currentPage == page.value}>
+				  {page.value}
+				</Pagination.Link>
+			  </Pagination.Item>
+			{/if}
+		  {/each}
+		  <Pagination.Item>
+			<Pagination.NextButton />
+		  </Pagination.Item>
+		</Pagination.Content>
+	  </Pagination.Root>
 	</Body>
-	
-	<Dialog.Root>
-		<Dialog.Trigger>Edit Profile</Dialog.Trigger>
-		<Dialog.Content class="sm:max-w-[70%] h-auto bg-cover bg-center" style="background-image: url('https://image.tmdb.org/t/p/original/{data.results[0].backdrop_path}');">
-		  <Dialog.Header>
-			<!-- <Dialog.Title>Edit profile</Dialog.Title>
-			<Dialog.Description>
-			  Make changes to your profile here. Click save when you're done.
-			</Dialog.Description> -->
-		  </Dialog.Header>
-		  <div class="grid grid-cols-3 gap-4">
-			<div class="col-span-1">
-				<img class="border-solid border-2 border-stone-200 drop-shadow-xl shadow-2xl" src="https://image.tmdb.org/t/p/original/{data.results[0].poster_path}" alt="Movie Poster"/>
-			</div>
-			<div class="col-span-2">
-				<Box>
-					<div class=" w-[100%] h-auto">
-						<TitleText>
-							{data.results[0].title}
-						</TitleText>
-						<SubTitleText>
-							{data.results[0].release_date}
-						</SubTitleText>
-						<BodyText>
-							{data.results[0].overview}
-						</BodyText>
-					</div>
-				</Box>
-			</div>
-		  </div>
-		  <Dialog.Footer>
-			<!-- <Button type="submit">Save changes</Button> -->
-		  </Dialog.Footer>
-		</Dialog.Content>
-	  </Dialog.Root>
+	<br/>
 </div>
