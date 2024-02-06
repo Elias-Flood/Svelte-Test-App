@@ -76,7 +76,7 @@ function addNewMango(_x: number, _y: number, _z: number){
 		<div class="grid-rows-3">
 			<Logo>Navbar</Logo>
 			<a href="/orders"><Button variant="ghost">Navlink 1</Button></a>
-			<Button variant="ghost">Navlink 2</Button>
+			<a href="/profile"><Button variant="ghost">Navlink 2</Button></a>
 			<Button variant="ghost">Navlink 3</Button>
 		</div>
 	</Header>
