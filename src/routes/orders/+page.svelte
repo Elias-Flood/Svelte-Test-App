@@ -14,12 +14,22 @@
 
 	import { buttonVariants } from "$lib/components/ui/button";
 	import * as Dialog from "$lib/components/ui/dialog";
+	import { Progress } from "$lib/components/ui/progress";
+	import * as Collapsible from "$lib/components/ui/collapsible";
+	import * as Tabs from "$lib/components/ui/tabs";
 
     import type { PageData, PageLoad } from './$types';
 
 	import { onMount } from "svelte";
 	import { writable, type Writable } from 'svelte/store';
+	import * as Table from '$lib/components/ui/table';
+	import * as HoverCard from "$lib/components/ui/hover-card";
+	import TableBody from '$lib/components/ui/table/table-body.svelte';
+	import { Root } from 'postcss';
 
+	import { AlignJustify } from 'lucide-svelte';
+	import { LibraryBig } from 'lucide-svelte';
+	
 interface Root {
   page: number
   results: Result[]
@@ -45,10 +55,15 @@ interface Result {
   vote_count: number
 }
 
-
+const defaultRootValue: Root = {
+  page: 0,
+  results: [],
+  total_pages: 0,
+  total_results: 0
+};
 
 //v5
-export let fData: Writable<Root> = writable();
+export let fData = writable<Root>(defaultRootValue);
 
 async function getMovies(page: number){
 	const options = {
@@ -66,14 +81,16 @@ async function getMovies(page: number){
 
 };
 
+let m_boolean: boolean;
+
 onMount(async () => {getMovies(1)});
 </script>
 
-<div class="h-screen bg-scroll bg-gradient-to-r from-purple-500 to-pink-500">
+<div>
 	<Header>
-		<button on:click={(() => getMovies(1))}>Hello 1</button>
+		<!-- <button on:click={(() => getMovies(1))}>Hello 1</button>
 		<button on:click={(() => getMovies(2))}>Hello 2 </button>
-		<button on:click={(() => getMovies(3))}>Hello 3</button>
+		<button on:click={(() => getMovies(3))}>Hello 3</button> -->
 		<div class="grid-rows-3">
 			<Logo>Navbar</Logo>
 			<a href="/"><Button variant="ghost">Navlink 1</Button></a>
@@ -87,9 +104,125 @@ onMount(async () => {getMovies(1)});
 
 	<Body>
 		<TitleText>Trending Movies</TitleText>
-		
-		<hr class="my-6 h-px border-t-0 bg-transparent bg-gradient-to-r from-transparent via-neutral-500 to-transparent opacity-25 dark:opacity-100"/>
 
+		<hr class="my-6 h-px border-t-0 bg-transparent bg-gradient-to-r from-transparent via-neutral-500 to-transparent opacity-25 dark:opacity-100"/>
+		
+		<Pagination.Root count={100} perPage={10} let:pages let:currentPage>
+			<Pagination.Content>
+			  {#each pages as page (page.key)}
+				{#if page.type === "ellipsis"}
+				  <Pagination.Item>
+					<Pagination.Ellipsis />
+				  </Pagination.Item>
+				{:else}
+				  <Pagination.Item>
+					<Pagination.Link {page} isActive={currentPage == page.value}>
+					  <!-- svelte-ignore a11y-no-noninteractive-element-interactions -->
+					  <!-- svelte-ignore a11y-click-events-have-key-events -->
+					  <p on:click={(() => getMovies(page.value))}>{page.value}</p> 
+					</Pagination.Link>
+				  </Pagination.Item>
+				{/if}
+			  {/each}
+			</Pagination.Content>
+		  </Pagination.Root>
+
+		<Tabs.Root value="cardView" class="">
+			<Tabs.List>
+			  <Tabs.Trigger value="cardView"><LibraryBig /></Tabs.Trigger>
+			  <Tabs.Trigger value="listView"><AlignJustify /></Tabs.Trigger>
+			</Tabs.List>
+			<Tabs.Content value="cardView">
+			  Make changes to your account here.
+			</Tabs.Content>
+			<Tabs.Content value="listView">
+				
+				<Box>
+					<Table.Root>
+						<Table.Caption>Currently Treding Movies - Page _</Table.Caption>
+						<Table.Header>
+						  <Table.Row>
+							<Table.Head class="w-[50%]">Title</Table.Head>
+							<Table.Head class="w-[25%]">Score</Table.Head>
+							<Table.Head class="w-[25%]">Release Date</Table.Head>
+						  </Table.Row>
+						</Table.Header>
+						<Table.Body>
+						{#each {length: $fData.results.length} as obj, i}
+						
+						  <Table.Row>
+							<Table.Cell class="font-medium text-start">
+								{$fData.results[i].title}
+							</Table.Cell>
+							<Table.Cell>
+								<Progress class="h-[10px]" value={($fData.results[i].vote_average)*10} />
+							</Table.Cell>
+							<Table.Cell>{$fData.results[i].release_date}</Table.Cell>
+						  </Table.Row>
+						{/each}
+						</Table.Body>
+					  </Table.Root>
+				</Box>
+
+			</Tabs.Content>
+		  </Tabs.Root>
+		
+<br/>
+		<Box>
+			<div class="grid grid-cols-4 gap-4 w-full">
+				<div class="col-span-2 bg-stone-300 p-2">Title</div>
+				<div class="bg-stone-300 p-2">Popularity</div>
+				<div class="bg-stone-300 p-2">Release Date</div>
+			</div>
+			
+			
+
+			<hr class="my-6 h-px border-t-0 bg-transparent bg-gradient-to-r from-transparent via-neutral-500 to-transparent opacity-25 dark:opacity-100"/>
+			{#each {length: $fData.results.length} as obj, i}
+				<!-- svelte-ignore a11y-no-static-element-interactions -->
+				
+				<HoverCard.Root >
+					<HoverCard.Trigger>
+						<a href="/" on:click={() => {m_boolean = true;}} on:mouseleave={() => {m_boolean = false;}}>
+							<div class="grid grid-cols-4 gap-4 w-full">
+								<div  class="col-span-2  bg-stone-200 border-2 border-stone-300 py-1 mx-0">{$fData.results[i].title}</div>
+								<div class="bg-stone-200 border-2 border-stone-300 py-1 mx-0">{$fData.results[i].popularity}</div>
+								<div class="bg-stone-200 border-2 border-stone-300 py-1 mx-0">{$fData.results[i].release_date}</div>
+							</div>
+							
+						</a>	
+					</HoverCard.Trigger>
+					<HoverCard.Content class="p-0">
+						<div class="grid grid-cols-3 gap-4">
+							<div>
+								<!-- svelte-ignore a11y-missing-attribute -->
+								<img src="https://image.tmdb.org/t/p/original/{$fData.results[i].poster_path}"/>
+							</div>
+							<div class="col-span-2 m-4">
+								<SubTitleText>{$fData.results[i].title}</SubTitleText>
+								<div style="overflow-y: auto; max-height: 200px;">
+									<p>{$fData.results[i].overview}</p>
+								</div>
+							</div>
+						</div>
+					</HoverCard.Content>
+				  </HoverCard.Root>
+			{/each}
+
+			<HoverCard.Root >
+				<HoverCard.Trigger>
+					hello
+				</HoverCard.Trigger>
+				<HoverCard.Content>
+					text here
+				</HoverCard.Content>
+			  </HoverCard.Root>
+		</Box>
+
+		
+
+		  <hr class="my-6 h-px border-t-0 bg-transparent bg-gradient-to-r from-transparent via-neutral-500 to-transparent opacity-25 dark:opacity-100"/>
+		
 		<div class="grid grid-cols-5 grid-rows-4 grid-flow-rows gap-4">
 			{#if ($fData.results)}
 			{#each {length: $fData.results.length} as obj, i}
@@ -141,9 +274,6 @@ onMount(async () => {getMovies(1)});
 
 	  <Pagination.Root count={100} perPage={10} let:pages let:currentPage>
 		<Pagination.Content>
-		  <Pagination.Item>
-			<Pagination.PrevButton />
-		  </Pagination.Item>
 		  {#each pages as page (page.key)}
 			{#if page.type === "ellipsis"}
 			  <Pagination.Item>
@@ -152,14 +282,13 @@ onMount(async () => {getMovies(1)});
 			{:else}
 			  <Pagination.Item>
 				<Pagination.Link {page} isActive={currentPage == page.value}>
-				  {page.value}
+				  <!-- svelte-ignore a11y-no-noninteractive-element-interactions -->
+				  <!-- svelte-ignore a11y-click-events-have-key-events -->
+				  <p on:click={(() => getMovies(page.value))}>{page.value}</p> 
 				</Pagination.Link>
 			  </Pagination.Item>
 			{/if}
 		  {/each}
-		  <Pagination.Item>
-			<Pagination.NextButton />
-		  </Pagination.Item>
 		</Pagination.Content>
 	  </Pagination.Root>
 	</Body>
