@@ -87,20 +87,7 @@ onMount(async () => {getMovies(1)});
 </script>
 
 <div>
-	<Header>
-		<!-- <button on:click={(() => getMovies(1))}>Hello 1</button>
-		<button on:click={(() => getMovies(2))}>Hello 2 </button>
-		<button on:click={(() => getMovies(3))}>Hello 3</button> -->
-		<div class="grid-rows-3">
-			<Logo>Navbar</Logo>
-			<a href="/"><Button variant="ghost">Navlink 1</Button></a>
-			<Button variant="ghost">Navlink 2</Button>
-			<Button variant="ghost">Navlink 3</Button>
-		</div>
-
-		<button id="my-button">Change color</button>
-    	<div id="my-div"></div>
-	</Header>
+	<Header></Header>
 
 	<Body>
 		<TitleText>Trending Movies</TitleText>
@@ -133,12 +120,32 @@ onMount(async () => {getMovies(1)});
 			  <Tabs.Trigger value="listView"><AlignJustify /></Tabs.Trigger>
 			</Tabs.List>
 			<Tabs.Content value="cardView">
-			  Make changes to your account here.
+			  
+				<Box>
+					<div class="grid grid-cols-5 grid-rows-4 grid-flow-rows gap-4">
+						{#if ($fData.results)}
+							{#each {length: $fData.results.length} as obj, i}
+							<div class="w-[100%]; hover:animate-wiggle">
+								<a href="/orders/edit?{$fData.results[i].id}">
+									<img src="https://image.tmdb.org/t/p/original/{$fData.results[i].poster_path}" alt="Movie Poster"/>
+								</a>
+							</div>
+							{/each}
+						{:else}
+						<div class="">
+							<svg class="animate-spin" viewBox="0 0 20 20">       
+								<image xlink:href="https://www.svgrepo.com/show/349636/spinner-3.svg" width="20" height="20"/>    
+							</svg>
+						</div>
+						{/if}
+					</div>
+				</Box>
+
 			</Tabs.Content>
 			<Tabs.Content value="listView">
 				
 				<Box>
-					<Table.Root>
+					<Table.Root class="bg-transparant">
 						<Table.Caption>Currently Treding Movies - Page _</Table.Caption>
 						<Table.Header>
 						  <Table.Row>
@@ -149,10 +156,11 @@ onMount(async () => {getMovies(1)});
 						</Table.Header>
 						<Table.Body>
 						{#each {length: $fData.results.length} as obj, i}
-						
 						  <Table.Row>
 							<Table.Cell class="font-medium text-start">
-								{$fData.results[i].title}
+								<a href="/orders/edit?{$fData.results[i].id}">
+									{$fData.results[i].title}
+								</a>
 							</Table.Cell>
 							<Table.Cell>
 								<Progress class="h-[10px]" value={($fData.results[i].vote_average)*10} />
@@ -168,7 +176,7 @@ onMount(async () => {getMovies(1)});
 		  </Tabs.Root>
 		
 <br/>
-		<Box>
+		<!-- <Box>
 			<div class="grid grid-cols-4 gap-4 w-full">
 				<div class="col-span-2 bg-stone-300 p-2">Title</div>
 				<div class="bg-stone-300 p-2">Popularity</div>
@@ -179,8 +187,6 @@ onMount(async () => {getMovies(1)});
 
 			<hr class="my-6 h-px border-t-0 bg-transparent bg-gradient-to-r from-transparent via-neutral-500 to-transparent opacity-25 dark:opacity-100"/>
 			{#each {length: $fData.results.length} as obj, i}
-				<!-- svelte-ignore a11y-no-static-element-interactions -->
-				
 				<HoverCard.Root >
 					<HoverCard.Trigger>
 						<a href="/" on:click={() => {m_boolean = true;}} on:mouseleave={() => {m_boolean = false;}}>
@@ -195,7 +201,6 @@ onMount(async () => {getMovies(1)});
 					<HoverCard.Content class="p-0">
 						<div class="grid grid-cols-3 gap-4">
 							<div>
-								<!-- svelte-ignore a11y-missing-attribute -->
 								<img src="https://image.tmdb.org/t/p/original/{$fData.results[i].poster_path}"/>
 							</div>
 							<div class="col-span-2 m-4">
@@ -217,13 +222,8 @@ onMount(async () => {getMovies(1)});
 					text here
 				</HoverCard.Content>
 			  </HoverCard.Root>
-		</Box>
-
-		
-
-		  <hr class="my-6 h-px border-t-0 bg-transparent bg-gradient-to-r from-transparent via-neutral-500 to-transparent opacity-25 dark:opacity-100"/>
-		
-		<div class="grid grid-cols-5 grid-rows-4 grid-flow-rows gap-4">
+		</Box> -->
+		<!-- <div class="grid grid-cols-5 grid-rows-4 grid-flow-rows gap-4">
 			{#if ($fData.results)}
 			{#each {length: $fData.results.length} as obj, i}
 			<div class="w-[100%]; hover:animate-wiggle">
@@ -269,7 +269,7 @@ onMount(async () => {getMovies(1)});
 				</svg>
 			</div>
 			{/if}
-		</div>
+		</div> -->
 		<hr class="my-6 h-px border-t-0 bg-transparent bg-gradient-to-r from-transparent via-neutral-500 to-transparent opacity-25 dark:opacity-100"/>
 
 	  <Pagination.Root count={100} perPage={10} let:pages let:currentPage>

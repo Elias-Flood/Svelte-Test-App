@@ -72,14 +72,7 @@ function addNewMango(_x: number, _y: number, _z: number){
 </script>
 
 <div class="h-screen bg-scroll bg-gradient-to-r from-purple-500 to-pink-500">
-	<Header>
-		<div class="grid-rows-3">
-			<Logo>Navbar</Logo>
-			<a href="/orders"><Button variant="ghost">Navlink 1</Button></a>
-			<a href="/profile"><Button variant="ghost">Navlink 2</Button></a>
-			<Button variant="ghost">Navlink 3</Button>
-		</div>
-	</Header>
+	<Header></Header>
 
 	<Body>
 		<div>
