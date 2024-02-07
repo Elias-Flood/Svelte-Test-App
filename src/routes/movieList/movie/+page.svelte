@@ -141,14 +141,15 @@ async function getSpecificMovies(movId:string){
 
         <div class="font-bold">Production Companies:</div>
         {#each $fData.production_companies as _productionCompany}
-        <div class="">{_productionCompany.name}</div>
 
         {#if (_productionCompany.logo_path != null)}
         <img style="" src="https://image.tmdb.org/t/p/original/{_productionCompany.logo_path}" alt="Company Logo" width="200"/>
+        {:else}
+        <div class="">{_productionCompany.name}</div>
         {/if}
         
         {/each}
 
-        
+
     </Box>
 </Body>
