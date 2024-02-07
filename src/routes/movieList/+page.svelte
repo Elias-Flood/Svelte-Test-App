@@ -126,7 +126,7 @@ onMount(async () => {getMovies(1)});
 						{#if ($fData.results)}
 							{#each {length: $fData.results.length} as obj, i}
 							<div class="w-[100%]; hover:animate-wiggle">
-								<a href="/orders/edit?{$fData.results[i].id}">
+								<a href="/movieList/movie?{$fData.results[i].id}">
 									<img src="https://image.tmdb.org/t/p/original/{$fData.results[i].poster_path}" alt="Movie Poster"/>
 								</a>
 							</div>
@@ -158,7 +158,7 @@ onMount(async () => {getMovies(1)});
 						{#each {length: $fData.results.length} as obj, i}
 						  <Table.Row>
 							<Table.Cell class="font-medium text-start">
-								<a href="/orders/edit?{$fData.results[i].id}">
+								<a href="/movieList/movie?{$fData.results[i].id}">
 									{$fData.results[i].title}
 								</a>
 							</Table.Cell>

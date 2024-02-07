@@ -89,6 +89,7 @@ import Header from '$lib/elements/header.svelte';
 
 import { writable, type Writable } from 'svelte/store';
 import { onMount } from 'svelte';
+	import type { Languages } from 'lucide-svelte';
 
 export let fData = writable<Root>(defaultRootValue);
 
@@ -122,5 +123,32 @@ async function getSpecificMovies(movId:string){
         <TitleText>
             <h1>{$fData.title}</h1>
         </TitleText>
+        {$fData.overview}
+        <br>
+        <div class="font-bold">{$fData.tagline}</div>
+
+        <div class="">{$fData.status}</div>
+
+        <div class="font-bold">Spoken Language:</div>
+        {#each $fData.spoken_languages as _language}
+        <div class="">{_language.english_name}</div>
+        {/each}
+        
+        <div class="font-bold">Genres:</div>
+        {#each $fData.genres as _genre}
+        <div class="">{_genre.name}</div>
+        {/each}
+
+        <div class="font-bold">Production Companies:</div>
+        {#each $fData.production_companies as _productionCompany}
+        <div class="">{_productionCompany.name}</div>
+
+        {#if (_productionCompany.logo_path != null)}
+        <img style="" src="https://image.tmdb.org/t/p/original/{_productionCompany.logo_path}" alt="Company Logo" width="200"/>
+        {/if}
+        
+        {/each}
+
+        
     </Box>
 </Body>
