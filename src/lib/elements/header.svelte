@@ -6,8 +6,8 @@
     <div class="grid-rows-3">
         <Logo>Navbar</Logo>
         <a href="/"><Button variant="ghost">Home</Button></a>
+        <a href="/movieSearch"><Button variant="ghost">Search Movies</Button></a>
         <a href="/movieList"><Button variant="ghost">Trending Movies</Button></a>
-        <Button variant="ghost">Nowhere</Button>
     </div>
     <slot></slot>
 </div>

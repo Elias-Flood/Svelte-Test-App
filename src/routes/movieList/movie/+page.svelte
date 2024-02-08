@@ -122,7 +122,7 @@ async function getSpecificMovies(movId:string){
 };
 
 </script>
-
+<div class="bg-no-repeat bg-cover bg-center h-screen" style="background-image: url(https://image.tmdb.org/t/p/original/{$fData.backdrop_path})">
 <Header></Header>
 <Body>
   <a class="" href="/movieList/"><Button>&#10094; Back</Button></a>
@@ -172,8 +172,8 @@ async function getSpecificMovies(movId:string){
               {#each $fData.production_companies as _productionCompany}
                 <div class="">{_productionCompany.name}</div>
               {/each}
-              <div>{$fData.revenue} $</div>
-              <div>{$fData.budget} $</div>
+              <div>Revenue: {$fData.revenue} $</div>
+              <div>Budget: {$fData.budget} $</div>
 
               <a href="{$fData.homepage}"><Button>Movie Homepage</Button></a>
             </Tabs.Content>
@@ -251,3 +251,4 @@ async function getSpecificMovies(movId:string){
         
     </Box>
 </Body>
+</div>
