@@ -17,6 +17,8 @@
 	import { Progress } from "$lib/components/ui/progress";
 	import * as Collapsible from "$lib/components/ui/collapsible";
 	import * as Tabs from "$lib/components/ui/tabs";
+	import * as Card from "$lib/components/ui/card";
+	import { Badge } from "$lib/components/ui/badge";
 
     import type { PageData, PageLoad } from './$types';
 
@@ -127,7 +129,14 @@ onMount(async () => {getMovies(1)});
 							{#each {length: $fData.results.length} as obj, i}
 							<div class="w-[100%]; hover:animate-wiggle">
 								<a href="/movieList/movie?{$fData.results[i].id}">
-									<img src="https://image.tmdb.org/t/p/original/{$fData.results[i].poster_path}" alt="Movie Poster"/>
+									<Card.Root class="w-[250px] h-[375px] p-2 bg-cover bg-center shadow-2xl"style="background-image: url(https://image.tmdb.org/t/p/original/{$fData.results[i].poster_path})">
+										<Card.Content class="m-0 flex justify-end">
+											<Badge variant="secondary">{Math.round(($fData.results[i].vote_average)*10)}% &#9733;</Badge>
+											<!-- <img style="" src="https://image.tmdb.org/t/p/original/{$fData.poster_path}" alt="Movie Poster" height="100%"/> -->
+											<!-- <Progress class="h-[5px] w-[30%]" value={($fData.results[i].vote_average)*10} /> -->
+										</Card.Content>
+									</Card.Root>
+									<!-- <img src="https://image.tmdb.org/t/p/original/{$fData.results[i].poster_path}" alt="Movie Poster"/> -->
 								</a>
 							</div>
 							{/each}
