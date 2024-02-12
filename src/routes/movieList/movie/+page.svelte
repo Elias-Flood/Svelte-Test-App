@@ -93,6 +93,7 @@ import { Progress } from "$lib/components/ui/progress";
 import { Badge } from "$lib/components/ui/badge";
 import * as Tabs from "$lib/components/ui/tabs";
 import Button from '$lib/components/ui/button/button.svelte';
+import { goto } from '$app/navigation';
 
 import { writable, type Writable } from 'svelte/store';
 import { onMount } from 'svelte';
@@ -102,8 +103,14 @@ export let fData = writable<Root>(defaultRootValue);
 
 onMount(async () => {
     const urlParams = new URLSearchParams(window.location.search);
- console.log(urlParams.toString());
-    getSpecificMovies(urlParams.toString())
+    if(urlParams.toString()!=""){
+      console.log(urlParams.toString());
+      getSpecificMovies(urlParams.toString());  
+    }
+    else{
+      console.log(urlParams.toString());
+      goto('/movieSearch');
+    }
 });
 
 async function getSpecificMovies(movId:string){

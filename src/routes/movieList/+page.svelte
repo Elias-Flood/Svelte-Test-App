@@ -105,10 +105,10 @@ onMount(async () => {getMovies(1)});
 				  </Pagination.Item>
 				{:else}
 				  <Pagination.Item>
-					<Pagination.Link {page} isActive={currentPage == page.value}>
+					<Pagination.Link {page} isActive={currentPage == page.value} on:click={(() => getMovies(page.value))}>
 					  <!-- svelte-ignore a11y-no-noninteractive-element-interactions -->
 					  <!-- svelte-ignore a11y-click-events-have-key-events -->
-					  <p on:click={(() => getMovies(page.value))}>{page.value}</p> 
+					  <p>{page.value}</p> 
 					</Pagination.Link>
 				  </Pagination.Item>
 				{/if}

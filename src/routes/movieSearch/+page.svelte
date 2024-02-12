@@ -35,6 +35,8 @@
 
 	import { ArrowRightCircle } from 'lucide-svelte';
 	import { Search } from 'lucide-svelte';
+	import { goto } from '$app/navigation';
+
 
 interface Root {
   page: number
@@ -87,31 +89,27 @@ async function searchMovies(searchQuery: string){
 		fData.set(fetchedData);
 };
 
-//onMount(async () => {searchMovies(1)});
+onMount(async () => {
+    const urlParams = new URLSearchParams(window.location.search);
+    if(urlParams.toString()!=""){
+      console.log(urlParams.toString());
+      await searchMovies(urlParams.toString()); 
+    }
+    else{
+      console.log(urlParams.toString());
+    }
+});
+
 </script>
 
 <div>
 	<Header></Header>
 
 	<Body>
-		{#if ($fData.total_results)==0}
-		
-		<div>
-			<TitleText>Find a Movie</TitleText>
-			<hr class="my-6 h-px border-t-0 bg-transparent bg-gradient-to-r from-transparent via-neutral-500 to-transparent opacity-25 dark:opacity-100"/>
-		</div>
-		<form class="flex justify-center">
-			<Input bind:value={userSearchQuery} class="bg-background w-[40%]"  type="text" placeholder="Search" />
-			<Button on:click={async () => {searchMovies(userSearchQuery)}} class="w-[10%]" type="submit">Search <Search class="p-0.5"/></Button>
-		</form>
-		<p class="flex justify-center">or</p>
-		<a href="/movieList" class="flex justify-center">
-			<Button class="w-[50%]">See Trending Movies <ArrowRightCircle class="p-0.5"/></Button>
-		</a>
-		{:else}
 		<form class="flex w-full max-w-sm items-center space-x-2">
 			<Input bind:value={userSearchQuery} class="bg-background"  type="text" placeholder="Search" />
 			<Button on:click={async () => {searchMovies(userSearchQuery)}} type="submit">Search <Search class="p-0.5"/></Button>
+
 		</form>
 
 		<hr class="my-6 h-px border-t-0 bg-transparent bg-gradient-to-r from-transparent via-neutral-500 to-transparent opacity-25 dark:opacity-100"/>
@@ -183,8 +181,6 @@ async function searchMovies(searchQuery: string){
 			</Tabs.Content>
 		  </Tabs.Root>
 		<hr class="my-6 h-px border-t-0 bg-transparent bg-gradient-to-r from-transparent via-neutral-500 to-transparent opacity-25 dark:opacity-100"/>
-
-		{/if}
 	</Body>
 	<br/>
 </div>
