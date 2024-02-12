@@ -31,7 +31,11 @@
 
 	import { AlignJustify } from 'lucide-svelte';
 	import { LibraryBig } from 'lucide-svelte';
-	
+	import { page } from '$app/stores';
+
+	import { ArrowRightCircle } from 'lucide-svelte';
+	import { Search } from 'lucide-svelte';
+
 interface Root {
   page: number
   results: Result[]
@@ -90,8 +94,25 @@ async function searchMovies(searchQuery: string){
 	<Header></Header>
 
 	<Body>
-		<button on:click={async () => {searchMovies(userSearchQuery)}}>search</button>
-		<input bind:value={userSearchQuery} placeholder="Search" />
+		{#if ($fData.total_results)==0}
+		
+		<div>
+			<TitleText>Find a Movie</TitleText>
+			<hr class="my-6 h-px border-t-0 bg-transparent bg-gradient-to-r from-transparent via-neutral-500 to-transparent opacity-25 dark:opacity-100"/>
+		</div>
+		<form class="flex justify-center">
+			<Input bind:value={userSearchQuery} class="bg-background w-[40%]"  type="text" placeholder="Search" />
+			<Button on:click={async () => {searchMovies(userSearchQuery)}} class="w-[10%]" type="submit">Search <Search class="p-0.5"/></Button>
+		</form>
+		<p class="flex justify-center">or</p>
+		<a href="/movieList" class="flex justify-center">
+			<Button class="w-[50%]">See Trending Movies <ArrowRightCircle class="p-0.5"/></Button>
+		</a>
+		{:else}
+		<form class="flex w-full max-w-sm items-center space-x-2">
+			<Input bind:value={userSearchQuery} class="bg-background"  type="text" placeholder="Search" />
+			<Button on:click={async () => {searchMovies(userSearchQuery)}} type="submit">Search <Search class="p-0.5"/></Button>
+		</form>
 
 		<hr class="my-6 h-px border-t-0 bg-transparent bg-gradient-to-r from-transparent via-neutral-500 to-transparent opacity-25 dark:opacity-100"/>
 		
@@ -134,7 +155,6 @@ async function searchMovies(searchQuery: string){
 				
 				<Box>
 					<Table.Root class="bg-transparant">
-						<Table.Caption>Currently Treding Movies - Page _</Table.Caption>
 						<Table.Header>
 						  <Table.Row>
 							<Table.Head class="w-[50%]">Title</Table.Head>
@@ -163,6 +183,8 @@ async function searchMovies(searchQuery: string){
 			</Tabs.Content>
 		  </Tabs.Root>
 		<hr class="my-6 h-px border-t-0 bg-transparent bg-gradient-to-r from-transparent via-neutral-500 to-transparent opacity-25 dark:opacity-100"/>
+
+		{/if}
 	</Body>
 	<br/>
 </div>

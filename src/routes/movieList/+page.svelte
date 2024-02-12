@@ -68,6 +68,8 @@ const defaultRootValue: Root = {
 export let fData = writable<Root>(defaultRootValue);
 
 async function getMovies(page: number){
+	fData = writable<Root>(defaultRootValue);
+
 	const options = {
 	method: 'GET',
 	headers: {
@@ -83,17 +85,15 @@ async function getMovies(page: number){
 
 };
 
-let m_boolean: boolean;
-
 onMount(async () => {getMovies(1)});
 </script>
 
-<div>
+<div class="overflow-y:scroll;">
 	<Header></Header>
 
 	<Body>
 		<TitleText>Trending Movies</TitleText>
-
+		
 		<hr class="my-6 h-px border-t-0 bg-transparent bg-gradient-to-r from-transparent via-neutral-500 to-transparent opacity-25 dark:opacity-100"/>
 		
 		<Pagination.Root count={100} perPage={10} let:pages let:currentPage>
@@ -124,6 +124,14 @@ onMount(async () => {getMovies(1)});
 			<Tabs.Content value="cardView">
 			  
 				<Box>
+					{#if ($fData.total_results == 0)}
+					<div class="flex w-full justify-center">
+						<svg class="animate-spin max-w-[25%]" viewBox="0 0 20 20">       
+							<image xlink:href="https://www.svgrepo.com/show/349636/spinner-3.svg" width="20" height="20"/>    
+						</svg>
+					</div>
+					{/if}
+
 					<div class="grid grid-cols-5 grid-rows-4 grid-flow-rows gap-4">
 						{#if ($fData.results)}
 							{#each {length: $fData.results.length} as obj, i}
@@ -140,12 +148,6 @@ onMount(async () => {getMovies(1)});
 								</a>
 							</div>
 							{/each}
-						{:else}
-						<div class="">
-							<svg class="animate-spin" viewBox="0 0 20 20">       
-								<image xlink:href="https://www.svgrepo.com/show/349636/spinner-3.svg" width="20" height="20"/>    
-							</svg>
-						</div>
 						{/if}
 					</div>
 				</Box>
@@ -154,6 +156,14 @@ onMount(async () => {getMovies(1)});
 			<Tabs.Content value="listView">
 				
 				<Box>
+					{#if ($fData.total_results == 0)}
+					<div class="flex w-full justify-center">
+						<svg class="animate-spin max-w-[25%]" viewBox="0 0 20 20">       
+							<image xlink:href="https://www.svgrepo.com/show/349636/spinner-3.svg" class="bg-primary" width="20" height="20"/>    
+						</svg>
+					</div>
+					{/if}
+
 					<Table.Root class="bg-transparant">
 						<Table.Caption>Currently Treding Movies - Page _</Table.Caption>
 						<Table.Header>
@@ -289,11 +299,11 @@ onMount(async () => {getMovies(1)});
 				<Pagination.Ellipsis />
 			  </Pagination.Item>
 			{:else}
-			  <Pagination.Item>
-				<Pagination.Link {page} isActive={currentPage == page.value}>
+			  <Pagination.Item >
+				<Pagination.Link on:click={(() => getMovies(page.value))} {page} isActive={currentPage == page.value}>
 				  <!-- svelte-ignore a11y-no-noninteractive-element-interactions -->
 				  <!-- svelte-ignore a11y-click-events-have-key-events -->
-				  <p on:click={(() => getMovies(page.value))}>{page.value}</p> 
+				  <p>{page.value}</p> 
 				</Pagination.Link>
 			  </Pagination.Item>
 			{/if}

@@ -120,12 +120,13 @@ async function getSpecificMovies(movId:string){
 		console.log(fetchedData);
 		fData.set(fetchedData);
 };
-
 </script>
+
+
 <div class="bg-no-repeat bg-cover bg-center h-screen" style="background-image: url(https://image.tmdb.org/t/p/original/{$fData.backdrop_path})">
 <Header></Header>
 <Body>
-  <a class="" href="/movieList/"><Button>&#10094; Back</Button></a>
+  <a href="javascript:window.history.back();"><Button>&#10094; Back</Button></a>
   <hr class="mt-4 h-px border-t-0 bg-transparent bg-gradient-to-r from-transparent via-neutral-500 to-transparent opacity-25 dark:opacity-100"/>
     <Box>
       <div class="grid grid-cols-4 grid-rows-4 gap-4">
@@ -141,7 +142,7 @@ async function getSpecificMovies(movId:string){
         </div>
         <div class="row-span-2 col-span-2 border border-10 p-2">
           <h6 class="font-bold">"{$fData.tagline}"</h6>
-          <p class="text-justify">{$fData.overview}</p>
+          <p style="overflow-y: auto; max-height: 200px;" class="text-justify">{$fData.overview}</p>
         </div>
         <div class="row-span-4 col-span-1 border border-10 p-0">
           <Tabs.Root value="facts" class="w-[400px]">
@@ -185,7 +186,7 @@ async function getSpecificMovies(movId:string){
               <h2 class="align-middle font-bold text-l">Avrage User Score:</h2>
             </div>
             <div class="flex justify-end">
-              <Badge class="bg-lime-700 align-middle">{Math.round(($fData.vote_average)*10)}% &#9733;</Badge>
+              <Badge class="align-middle">{Math.round(($fData.vote_average)*10)}% &#9733;</Badge>
             </div>
             <div class="col-span-2 align-middle">
               <Progress class="h-[10px]" value={($fData.vote_average)*10} />
