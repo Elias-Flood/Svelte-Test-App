@@ -4,7 +4,7 @@
 </script>
 <div class="px-12 py-2  bg-stone-800 border-solid text-slate-100 font-bold">
     <div class="grid-rows-3">
-        <Logo>Navbar</Logo>
+        <Logo>Movie Site</Logo>
         <a href="/"><Button variant="link">Home</Button></a>
         <a href="/movieSearch"><Button variant="link">Search Movies</Button></a>
         <a href="/movieList?page=1"><Button variant="link">Trending Movies</Button></a>
