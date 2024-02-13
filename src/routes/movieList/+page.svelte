@@ -216,6 +216,7 @@ function isOnlyDigits(input: string) {
 			  </Pagination.Item>
 			{/if}
 		  {/each}
+		  
 		</Pagination.Content>
 	  </Pagination.Root>
 	</Body>

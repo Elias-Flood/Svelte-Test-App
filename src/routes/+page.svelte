@@ -12,7 +12,6 @@
 let userSearchQuery = '';
 function goTo(string: String){
 	window.location.href = "/movieSearch?"+string;
-	//goto('/movieSearch?$' + userSearchQuery);
 }
 
 </script>

@@ -86,9 +86,8 @@ onMount(async () => {
 
 	<Body>
 		<form class="flex w-full max-w-sm items-center space-x-2">
-			<Input bind:value={userSearchQuery} class="bg-background"  type="text" placeholder="Search" />
-			<Button on:click={async () => {searchMovies(userSearchQuery)}} type="submit">Search <Search class="p-0.5"/></Button>
-
+			<Input bind:value={userSearchQuery} class="bg-background"  type="text" placeholder="search" />
+			<Button on:click={async () => {window.location.href = "/movieSearch?"+ userSearchQuery}} type="submit">Search <Search class="p-0.5"/></Button>
 		</form>
 
 		<hr class="my-6 h-px border-t-0 bg-transparent bg-gradient-to-r from-transparent via-neutral-500 to-transparent opacity-25 dark:opacity-100"/>
