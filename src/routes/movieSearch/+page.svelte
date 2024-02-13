@@ -1,41 +1,22 @@
 <script lang="ts">
 	import { Button } from '$lib/components/ui/button';
 	import { Input } from '$lib/components/ui/input';
-	import TitleText from '$lib/elements/titleText.svelte';
-	import SubTitleText from '$lib/elements/subTitleText.svelte';
 	import Body from '$lib/elements/body.svelte';
-	import BodyText from '$lib/elements/bodyText.svelte';
 	import Box from '$lib/elements/box.svelte';
 	import Header from '$lib/elements/header.svelte';
-	import Logo from '$lib/elements/logoText.svelte';
-	import LogoText from '$lib/elements/logoText.svelte';
 
-	import * as Pagination from "$lib/components/ui/pagination";
-
-	import { buttonVariants } from "$lib/components/ui/button";
-	import * as Dialog from "$lib/components/ui/dialog";
 	import { Progress } from "$lib/components/ui/progress";
-	import * as Collapsible from "$lib/components/ui/collapsible";
 	import * as Tabs from "$lib/components/ui/tabs";
 	import * as Card from "$lib/components/ui/card";
 	import { Badge } from "$lib/components/ui/badge";
 
-    // import type { PageData, PageLoad } from './$types';
-
 	import { onMount } from "svelte";
 	import { writable, type Writable } from 'svelte/store';
 	import * as Table from '$lib/components/ui/table';
-	import * as HoverCard from "$lib/components/ui/hover-card";
-	import TableBody from '$lib/components/ui/table/table-body.svelte';
-	import { Root } from 'postcss';
 
 	import { AlignJustify } from 'lucide-svelte';
 	import { LibraryBig } from 'lucide-svelte';
-	import { page } from '$app/stores';
-
-	import { ArrowRightCircle } from 'lucide-svelte';
 	import { Search } from 'lucide-svelte';
-	import { goto } from '$app/navigation';
 
 
 interface Root {
@@ -85,14 +66,14 @@ async function searchMovies(searchQuery: string){
 
 	const response = await fetch('https://api.themoviedb.org/3/search/movie?query='+ searchQuery +'&include_adult=false&language=en-US&page=1', options)
 		const fetchedData = await response.json();
-		console.log(fetchedData);
+		//console.log(fetchedData);
 		fData.set(fetchedData);
 };
 
 onMount(async () => {
     const urlParams = new URLSearchParams(window.location.search);
     if(urlParams.toString()!=""){
-      console.log(urlParams.toString());
+      //console.log(urlParams.toString());
       await searchMovies(urlParams.toString()); 
     }
     else{
@@ -141,7 +122,7 @@ onMount(async () => {
 						{:else}
 						<div class="">
 							<svg class="animate-spin" viewBox="0 0 20 20">       
-								<image xlink:href="https://www.svgrepo.com/show/349636/spinner-3.svg" width="20" height="20"/>    
+								<image href="https://www.svgrepo.com/show/349636/spinner-3.svg" width="20" height="20"/>    
 							</svg>
 						</div>
 						{/if}
