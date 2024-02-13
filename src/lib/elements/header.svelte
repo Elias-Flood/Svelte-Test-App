@@ -7,7 +7,7 @@
         <Logo>Navbar</Logo>
         <a href="/"><Button variant="link">Home</Button></a>
         <a href="/movieSearch"><Button variant="link">Search Movies</Button></a>
-        <a href="/movieList"><Button variant="link">Trending Movies</Button></a>
+        <a href="/movieList?page=1"><Button variant="link">Trending Movies</Button></a>
     </div>
     <slot></slot>
 </div>

@@ -17,7 +17,12 @@
 
 	import { AlignJustify } from 'lucide-svelte';
 	import { LibraryBig } from 'lucide-svelte';
+
+	import { page } from '$app/stores'
+	import { Skeleton } from "$lib/components/ui/skeleton";
 	
+let paginationPageParam = $page.url.searchParams.get("page");
+
 interface Root {
   page: number
   results: Result[]
@@ -53,7 +58,7 @@ const defaultRootValue: Root = {
 // v6
 export let fData = writable<Root>(defaultRootValue);
 
-async function getMovies(page: string){
+async function getMovies(page: number){
 	fData = writable<Root>(defaultRootValue);
 
 	const options = {
@@ -72,18 +77,12 @@ async function getMovies(page: string){
 };
 
 onMount(async () => {
-	const urlParams = new URLSearchParams(window.location.search);
-    if(urlParams.toString()!=""){
-		if(parseInt( urlParams.toString())){
-			await getMovies(urlParams.toString()); 
-		}
-		else{
-			console.log(urlParams.toString());
-		}
-    }
-    else{
-      console.log(urlParams.toString());
-    }});
+	if(isOnlyDigits(Number(paginationPageParam).toString())){
+		await getMovies(Number(paginationPageParam)); 
+	}
+	else{
+		console.log(Number(paginationPageParam));
+	}});
 
 function isOnlyDigits(input: string) {
    for (let i = 0; i < input.length; i++) {
@@ -93,10 +92,6 @@ function isOnlyDigits(input: string) {
       }
    }
    return true;
-}
-
-function goTo(string: String){
-	window.location.href = "/movieList?"+string;
 }
 </script>
 
@@ -108,7 +103,7 @@ function goTo(string: String){
 		
 		<hr class="my-6 h-px border-t-0 bg-transparent bg-gradient-to-r from-transparent via-neutral-500 to-transparent opacity-25 dark:opacity-100"/>
 		
-		<Pagination.Root count={100} perPage={10} let:pages let:currentPage>
+		<Pagination.Root count={100} perPage={10} page={Number(paginationPageParam)} let:pages let:currentPage>
 			<Pagination.Content>
 			  {#each pages as page (page.key)}
 				{#if page.type === "ellipsis"}
@@ -116,8 +111,8 @@ function goTo(string: String){
 					<Pagination.Ellipsis />
 				  </Pagination.Item>
 				{:else}
-				  <Pagination.Item>
-					<Pagination.Link {page} isActive={currentPage == page.value} on:click={(() => goTo(page.value))}>
+				  <Pagination.Item >
+					<Pagination.Link on:click={(() => window.location.href = "/movieList?page="+ page.value)} {page} isActive={currentPage == page.value}>
 					  <p>{page.value}</p> 
 					</Pagination.Link>
 				  </Pagination.Item>
@@ -135,10 +130,13 @@ function goTo(string: String){
 			  
 				<Box>
 					{#if ($fData.total_results == 0)}
-					<div class="flex w-full justify-center">
-						<svg class="animate-spin max-w-[25%]" viewBox="0 0 20 20">       
-							<image xlink:href="https://www.svgrepo.com/show/349636/spinner-3.svg" width="20" height="20"/>    
-						</svg>
+
+					<div class="grid grid-cols-5 grid-rows-4 grid-flow-rows gap-4">
+						{#if ($fData.results)}
+							{#each {length: 20} as obj, i}
+							<Skeleton class="w-[250px] h-[375px] rounded-0" />
+							{/each}
+						{/if}
 					</div>
 					{/if}
 
@@ -166,13 +164,13 @@ function goTo(string: String){
 					{#if ($fData.total_results == 0)}
 					<div class="flex w-full justify-center">
 						<svg class="animate-spin max-w-[25%]" viewBox="0 0 20 20">       
-							<image xlink:href="https://www.svgrepo.com/show/349636/spinner-3.svg" class="bg-primary" width="20" height="20"/>    
+							<image href="https://www.svgrepo.com/show/349636/spinner-3.svg" class="bg-primary" width="20" height="20"/>    
 						</svg>
 					</div>
 					{/if}
 
 					<Table.Root class="bg-transparant">
-						<Table.Caption>Currently Treding Movies - Page _</Table.Caption>
+						<Table.Caption>Currently Treding Movies - Page {paginationPageParam}</Table.Caption>
 						<Table.Header>
 						  <Table.Row>
 							<Table.Head class="w-[50%]">Title</Table.Head>
@@ -197,16 +195,14 @@ function goTo(string: String){
 						</Table.Body>
 					  </Table.Root>
 				</Box>
-
 			</Tabs.Content>
 		  </Tabs.Root>
 		
 <br/>
 	<hr class="my-6 h-px border-t-0 bg-transparent bg-gradient-to-r from-transparent via-neutral-500 to-transparent opacity-25 dark:opacity-100"/>
 
-	  <Pagination.Root count={100} perPage={10} let:pages let:currentPage>
+	  <Pagination.Root count={100} perPage={10} page={Number(paginationPageParam)} let:pages let:currentPage>
 		<Pagination.Content>
-		<!-- {currentPage = parseInt(window.location.search.toString()[0])}; -->
 		  {#each pages as page (page.key)}
 			{#if page.type === "ellipsis"}
 			  <Pagination.Item>
@@ -214,7 +210,7 @@ function goTo(string: String){
 			  </Pagination.Item>
 			{:else}
 			  <Pagination.Item >
-				<Pagination.Link on:click={(() => getMovies(page.value))} {page} isActive={currentPage == page.value}>
+				<Pagination.Link on:click={(() => window.location.href = "/movieList?page="+ page.value)} {page} isActive={currentPage == page.value}>
 				  <p>{page.value}</p> 
 				</Pagination.Link>
 			  </Pagination.Item>

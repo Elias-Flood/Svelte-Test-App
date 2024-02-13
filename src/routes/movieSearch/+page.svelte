@@ -66,14 +66,12 @@ async function searchMovies(searchQuery: string){
 
 	const response = await fetch('https://api.themoviedb.org/3/search/movie?query='+ searchQuery +'&include_adult=false&language=en-US&page=1', options)
 		const fetchedData = await response.json();
-		//console.log(fetchedData);
 		fData.set(fetchedData);
 };
 
 onMount(async () => {
     const urlParams = new URLSearchParams(window.location.search);
     if(urlParams.toString()!=""){
-      //console.log(urlParams.toString());
       await searchMovies(urlParams.toString()); 
     }
     else{
@@ -103,6 +101,9 @@ onMount(async () => {
 			<Tabs.Content value="cardView">
 			  
 				<Box>
+					{#if ($fData.total_results==0)}
+						<p class="text-center">No Results Found</p>
+					{/if}
 					<div class="grid grid-cols-5 grid-rows-4 grid-flow-rows gap-4">
 						{#if ($fData.results)}
 							{#each {length: $fData.results.length} as obj, i}
@@ -111,11 +112,8 @@ onMount(async () => {
 									<Card.Root class="w-[250px] h-[375px] p-2 bg-cover bg-center shadow-2xl"style="background-image: url(https://image.tmdb.org/t/p/original/{$fData.results[i].poster_path})">
 										<Card.Content class="m-0 flex justify-end">
 											<Badge variant="secondary">{Math.round(($fData.results[i].vote_average)*10)}% &#9733;</Badge>
-											<!-- <img style="" src="https://image.tmdb.org/t/p/original/{$fData.poster_path}" alt="Movie Poster" height="100%"/> -->
-											<!-- <Progress class="h-[5px] w-[30%]" value={($fData.results[i].vote_average)*10} /> -->
 										</Card.Content>
 									</Card.Root>
-									<!-- <img src="https://image.tmdb.org/t/p/original/{$fData.results[i].poster_path}" alt="Movie Poster"/> -->
 								</a>
 							</div>
 							{/each}
@@ -157,11 +155,13 @@ onMount(async () => {
 						{/each}
 						</Table.Body>
 					  </Table.Root>
+					{#if ($fData.total_results==0)}
+						<br/>		
+						<p class="text-center">No Results Found</p>
+					{/if}
 				</Box>
-
 			</Tabs.Content>
 		  </Tabs.Root>
-		<hr class="my-6 h-px border-t-0 bg-transparent bg-gradient-to-r from-transparent via-neutral-500 to-transparent opacity-25 dark:opacity-100"/>
 	</Body>
 	<br/>
 </div>

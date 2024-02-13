@@ -30,7 +30,7 @@ function goTo(string: String){
 			<Button on:click={() => {goTo(userSearchQuery.toString())}} class="w-[10%]" type="submit">Search <Search class="p-0.5"/></Button>
 		</form>
 		<p class="flex justify-center">or</p>
-		<a href="/movieList" class="flex justify-center">
+		<a href="/movieList?page=1" class="flex justify-center">
 			<Button class="w-[50%]">See Trending Movies <ArrowRightCircle class="p-0.5"/></Button>
 		</a>
 	</Body>
