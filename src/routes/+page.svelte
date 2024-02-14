@@ -13,14 +13,13 @@ let userSearchQuery = '';
 function goTo(string: String){
 	window.location.href = "/movieSearch?"+string;
 }
-
 </script>
 
 <div>
 	<Header></Header>
 
 	<Body>
-		<div>
+		<div >
 			<TitleText>Find a Movie</TitleText>
 			<hr class="my-6 h-px border-t-0 bg-transparent bg-gradient-to-r from-transparent via-neutral-500 to-transparent opacity-25 dark:opacity-100"/>
 		</div>
