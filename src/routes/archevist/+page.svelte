@@ -18,6 +18,33 @@
 	import { LibraryBig } from 'lucide-svelte';
 	import { Search } from 'lucide-svelte';
 	import { Separator } from "$lib/components/ui/separator";
+	import { Title } from '$lib/components/ui/alert-dialog';
+
+	class Section{
+		Title?:String;
+		Text:String = 'Text here';
+	}
+	class Article
+	{
+		Title:String = "NaN";
+		SubjectType?:String; 
+
+		TagLine?:String;
+		WordTags?:String;
+
+		Description?:String;
+		Images?: (string)[];
+
+		TextSection?:(Section)[];
+
+		ImageText?: Section;
+		CardImage?: (string)[];
+	}
+
+	export const articles:(Article)[]=[
+		{"Title": "Title here", "SubjectType":"Faction","TagLine":"This is a tagline.","WordTags":"Bad, Good, Ugly","Description":"The Description of the article goes here."},
+		{"Title": "This is the second article.", "SubjectType":"Faction","TagLine":"This is a tagline.","WordTags":"Bad, Good, Ugly","Description":"The Description of the article goes here."}
+	];
 
 </script>
 
@@ -25,7 +52,7 @@
 	<div class="grid grid-flow-col grid-cols-9 grid-rows-1 h-screen">
 		<div class="border border-2 col-span-2 h-[100%]">
 			<div class="border border-2 ">
-				<img src="https://t4.ftcdn.net/jpg/00/89/55/15/360_F_89551596_LdHAZRwz3i4EM4J0NHNHy2hEUYDfXc0j.jpg" alt="03 Image"/>
+				<img src="https://t4.ftcdn.net/jpg/00/89/55/15/360_F_89551596_LdHAZRwz3i4EM4J0NHNHy2hEUYDfXc0j.jpg"/>
 			</div>
 			<!-- 01 Side Menu -->
 			<div class="border border-2">
@@ -41,13 +68,13 @@
 			<!-- 02 Body -->
 			<div class="border border-2 h-[95%] overflow-y-scroll">
 				<div class="border border-2 h-[10%]">
-					<span class="text-2xl px-2">Article Title</span><span class="text-lg opacity-75">(Faction)</span><span class="text-base italic opacity-50 px-2">Lorem, Ipsum, Dolor</span>
-					<p class="text-base italic  px-2">"Lorem ipsum dolor sit amet, consectetur adipiscing elit."</p>
+					<span class="text-2xl px-2">{articles[0].Title}</span><span class="text-lg opacity-75">({articles[0].SubjectType})</span><span class="text-base italic opacity-50 px-2">{articles[0].WordTags}</span>
+					<p class="text-base italic  px-2">"{articles[0].TagLine}"</p>
 				</div>
 				<div class="grid grid-flow-col grid-cols-6 h-[40%]">
 					<div class="border border-2 col-span-3">
 						<h2 class="text-lg p-2">Description</h2>
-						<p class="p-2">Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.</p>
+						<p class="p-2">{articles[0].Description}</p>
 					</div>
 					<div class="border border-2 col-span-3">
 						Image Carousel
